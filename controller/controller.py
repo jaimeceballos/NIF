@@ -36,15 +36,14 @@ def completar(numero):
 	return numero
 
 def crear_barcode(numero):
-	filename = 'generated/temp/'+numero
-	numero = numero
+	filename = os.path.join('generated','temp',str(numero))
+	print filename
 	writer = barcode.writer.ImageWriter()
 	code = barcode.Code39(numero,writer = writer,add_checksum = False)
 	archivo = code.save(filename)
 	return archivo
 
 def generar_codigos(provincia,ciudad,numeroInicial,cantidad):
-	print BASE_DIR
 	total_imagenes = cantidad * 2
 	paginas =  calcular_cantidad_paginas(total_imagenes)
 	archivo = FPDF('P','mm','A4')
@@ -69,8 +68,8 @@ def generar_codigos(provincia,ciudad,numeroInicial,cantidad):
 			eje_x = 0
 		if(cantidad > 0):
 			archivo.add_page()
-	archivo.output('generated/codigos.pdf','F')
-	shutil.rmtree('generated/temp')
+	archivo.output(os.path.join('generated','codigos.pdf'),'F')
+	shutil.rmtree(os.path.join('generated','temp'))
 
 def calcular_cantidad_paginas(cantidad):
 	resto = (cantidad / 48.0) - (cantidad / 48)
@@ -79,5 +78,5 @@ def calcular_cantidad_paginas(cantidad):
 	return (cantidad / 48)
 
 def borrar_anterior():
-	os.remove('generated/codigos.pdf')
-	os.makedirs('generated/temp')
+	os.remove(os.path.join('generated','codigos.pdf'))
+	os.makedirs(os.path.join('generated','temp'))
